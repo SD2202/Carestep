@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - CareStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 h-screen p-6">
+            <h1 class="text-xl font-bold mb-8 text-blue-400">CareStep Admin</h1>
+            <nav class="space-y-4">
+                <a href="#" class="block hover:text-blue-400">Dashboard</a>
+                <a href="#" class="block hover:text-blue-400">User Management</a>
+                <a href="#" class="block hover:text-blue-400">Service Logs</a>
+                <a href="#" class="block hover:text-blue-400">Reports</a>
+            </nav>
+        </div>
+
+        <!-- Main -->
+        <div class="flex-1 p-8">
+            <h2 class="text-3xl font-bold mb-8">System Overview</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                    <p class="text-gray-400">Total Users</p>
+                    <p class="text-4xl font-bold" id="totalUsers">0</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                    <p class="text-gray-400">Total Bookings</p>
+                    <p class="text-4xl font-bold" id="totalBookings">0</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                    <p class="text-gray-400">System Status</p>
+                    <p class="text-xl text-green-400">Operational</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-xl font-bold mb-4">Recent Bookings (All Users)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-gray-700">
+                                <th class="pb-2">Booking ID</th>
+                                <th class="pb-2">User ID</th>
+                                <th class="pb-2">Status</th>
+                                <th class="pb-2">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminHistory">
+                            <!-- JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        async function loadAdminData() {
+            try {
+                const users = await apiCall('/admin/users');
+                const bookings = await apiCall('/admin/bookings');
+
+                document.getElementById('totalUsers').textContent = users.length;
+                document.getElementById('totalBookings').textContent = bookings.length;
+
+                document.getElementById('adminHistory').innerHTML = bookings.map(item => `
+                    <tr class="border-b border-gray-700">
+                        <td class="py-3">${item.id}</td>
+                        <td class="py-3">${item.user_id}</td>
+                        <td class="py-3">${item.status}</td>
+                        <td class="py-3">${new Date(item.booking_date).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                alert('Admin access required');
+                window.location.href = 'dashboard.html';
+            }
+        }
+        loadAdminData();
+    </script>
+</body>
+
+</html>

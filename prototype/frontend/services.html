@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Services - CareStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body class="bg-slate-50 min-h-screen">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600 text-3xl">medical_services</span>
+                    <span class="font-bold text-xl">CareStep</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <button onclick="logout()" class="btn-secondary px-3 py-1">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-slate-900">Medical Services</h1>
+            <p class="mt-4 text-slate-600">Choose a professional service delivered to your home.</p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Nursing Card -->
+            <div class="medical-card p-0 overflow-hidden">
+                <div class="bg-blue-600 p-8 flex justify-center">
+                    <span class="material-symbols-outlined text-white text-7xl">home_health</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Nursing at Doorstep</h3>
+                    <p class="text-slate-600 mb-4">Wound care, injection management, and recovery monitoring by
+                        certified nurses.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold text-blue-600">$50 / visit</span>
+                        <button onclick="openBooking(1, 'Nursing at Doorstep')" class="btn-primary">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor Card -->
+            <div class="medical-card p-0 overflow-hidden">
+                <div class="bg-green-600 p-8 flex justify-center">
+                    <span class="material-symbols-outlined text-white text-7xl">medical_information</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Doctor Home Visit</h3>
+                    <p class="text-slate-600 mb-4">Consultation with general practitioners for non-emergency medical
+                        concerns.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold text-blue-600">$80 / visit</span>
+                        <button onclick="openBooking(2, 'Doctor Visit')" class="btn-primary">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blood Card -->
+            <div class="medical-card p-0 overflow-hidden">
+                <div class="bg-red-600 p-8 flex justify-center">
+                    <span class="material-symbols-outlined text-white text-7xl">bloodtype</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Blood & Lab Services</h3>
+                    <p class="text-slate-600 mb-4">Sample collection for lab tests or emergency blood bank assistance.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold text-blue-600">$30 / collection</span>
+                        <button onclick="openBooking(3, 'Blood Service')" class="btn-primary">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h2 class="text-2xl font-bold mb-4" id="modalTitle">Book Service</h2>
+            <form id="bookingForm" class="space-y-4">
+                <input type="hidden" id="serviceId">
+                <div>
+                    <label class="block text-sm font-medium">Scheduled Date & Time</label>
+                    <input type="datetime-local" id="scheduleDate" required
+                        class="mt-1 block w-full border border-gray-300 rounded p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Full Home Address</label>
+                    <textarea id="address" required class="mt-1 block w-full border border-gray-300 rounded p-2"
+                        rows="3"></textarea>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeBooking()" class="flex-1 btn-secondary">Cancel</button>
+                    <button type="submit" class="flex-1 btn-primary">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        function openBooking(id, name) {
+            if (!localStorage.getItem('token')) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('serviceId').value = id;
+            document.getElementById('modalTitle').textContent = `Book ${name}`;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closeBooking() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const body = {
+                service_id: parseInt(document.getElementById('serviceId').value),
+                scheduled_date: document.getElementById('scheduleDate').value,
+                address: document.getElementById('address').value
+            };
+
+            try {
+                await apiCall('/bookings/', 'POST', body);
+                alert('Booking successful!');
+                window.location.href = 'dashboard.html';
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+    </script>
+</body>
+
+</html>

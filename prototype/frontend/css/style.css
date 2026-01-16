@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --medical-blue: #2B6CB0;
+    --medical-light-blue: #EBF8FF;
+    --medical-green: #38A169;
+    --medical-gray: #718096;
+    --medical-dark: #2D3748;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--medical-dark);
+    background-color: #F7FAFC;
+}
+
+.medical-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out;
+}
+
+.medical-card:hover {
+    transform: translateY(-4px);
+}
+
+.btn-primary {
+    background-color: var(--medical-blue);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #2C5282;
+}
+
+.btn-secondary {
+    background-color: white;
+    border: 1px solid var(--medical-blue);
+    color: var(--medical-blue);
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.nav-link {
+    color: var(--medical-gray);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.nav-link:hover {
+    color: var(--medical-blue);
+    background-color: var(--medical-light-blue);
+}
