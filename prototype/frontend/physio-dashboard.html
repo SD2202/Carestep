@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Dashboard - CareStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body class="bg-emerald-50 min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-emerald-950 border-r border-emerald-900 min-h-screen sticky top-0 hidden lg:block">
+            <div class="p-6">
+                <div class="flex items-center gap-2 mb-8">
+                    <span class="material-symbols-outlined text-emerald-400 text-3xl">exercise</span>
+                    <span class="font-bold text-xl text-white">CareStep Physio</span>
+                </div>
+                <nav class="space-y-1">
+                    <button onclick="showSection('schedule')" id="nav-schedule"
+                        class="w-full flex items-center gap-3 px-4 py-3 bg-emerald-700 text-white rounded-lg nav-btn group">
+                        <span class="material-symbols-outlined">calendar_month</span>
+                        <span>Schedule</span>
+                    </button>
+                    <button onclick="showSection('progress')" id="nav-progress"
+                        class="w-full flex items-center gap-3 px-4 py-3 text-emerald-300 hover:bg-emerald-900 hover:text-white rounded-lg transition nav-btn group">
+                        <span class="material-symbols-outlined">monitoring</span>
+                        <span>Progress Tracking</span>
+                    </button>
+                    <button onclick="showSection('plans')" id="nav-plans"
+                        class="w-full flex items-center gap-3 px-4 py-3 text-emerald-300 hover:bg-emerald-900 hover:text-white rounded-lg transition nav-btn group">
+                        <span class="material-symbols-outlined">description</span>
+                        <span>Exercise Plans</span>
+                    </button>
+                </nav>
+            </div>
+            <div class="absolute bottom-0 w-full p-6 border-t border-emerald-900">
+                <button onclick="logout()"
+                    class="flex items-center gap-3 px-4 py-3 text-emerald-300 hover:text-white transition">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <!-- Top Bar -->
+            <header
+                class="h-16 bg-white border-b border-emerald-100 flex items-center justify-between px-8 sticky top-0 z-10">
+                <h2 class="text-xl font-semibold text-emerald-900">Physiotherapy Portal</h2>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-900" id="physioName">Dr. Alex Reed</p>
+                        <p class="text-xs text-emerald-600">Rehabilitation Specialist</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">
+                        AR</div>
+                </div>
+            </header>
+
+            <div class="p-8 max-w-7xl mx-auto space-y-8">
+                <!-- Schedule Section -->
+                <div id="section-schedule" class="section-content p-8 max-w-7xl mx-auto space-y-8">
+                    <!-- Session Schedule -->
+                    <div class="bg-white rounded-2xl border border-emerald-100 shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-emerald-600">event_available</span>
+                                Today's Therapy Sessions
+                            </h3>
+                            <button
+                                class="px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-lg hover:bg-emerald-700 transition">Add
+                                Session</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Session Card -->
+                            <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-6 flex flex-col justify-between transition-all"
+                                id="card-karan">
+                                <div>
+                                    <div class="flex justify-between items-start mb-4">
+                                        <span
+                                            class="px-2 py-1 bg-white border border-emerald-200 text-emerald-700 text-xs font-bold rounded">2:30
+                                            PM</span>
+                                        <span class="text-emerald-600 material-symbols-outlined">more_vert</span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900 text-lg">Karan Singh</h4>
+                                    <p class="text-sm text-slate-500 mb-4">Knee Post-ACL Surgery Rehab</p>
+                                    <div class="flex items-center gap-2 text-xs text-emerald-700 mb-4">
+                                        <span class="material-symbols-outlined text-sm">history</span> Session 4 of 12
+                                    </div>
+                                </div>
+                                <div class="flex gap-2" id="session-karan">
+                                    <button onclick="showSection('progress')"
+                                        class="flex-1 py-2 bg-white border border-emerald-600 text-emerald-700 text-xs font-bold rounded-lg hover:bg-emerald-50 transition">View
+                                        Progress</button>
+                                    <button onclick="startSession('Karan Singh', 'session-karan', 'card-karan')"
+                                        class="flex-1 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="section-progress" class="section-content hidden p-8 max-w-7xl mx-auto space-y-8">
+                    <div class="bg-white rounded-2xl border border-emerald-100 shadow-sm p-6 text-center py-20">
+                        <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">analytics</span>
+                        <h3 class="text-xl font-bold text-slate-900">Patient Analytics</h3>
+                        <p class="text-slate-500">Recovery trends and mobility reports will appear here.</p>
+                    </div>
+                </div>
+
+                <!-- Plans Section -->
+                <div id="section-plans" class="section-content hidden p-8 max-w-7xl mx-auto space-y-8">
+                    <div class="bg-white rounded-2xl border border-emerald-100 shadow-sm p-6">
+                        <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined">folder_special</span>
+                            Exercise Library
+                        </h3>
+                        <div class="space-y-3">
+                            <div
+                                class="flex items-center justify-between p-4 border border-emerald-50 bg-emerald-50/20 rounded-xl hover:border-emerald-200 transition cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="material-symbols-outlined text-emerald-600 p-2 bg-white rounded-lg shadow-sm">fitness_center</span>
+                                    <div>
+                                        <p class="font-bold text-slate-900 text-sm">Shoulder Mobility Plan</p>
+                                        <p class="text-xs text-emerald-600">8 Home Exercises</p>
+                                    </div>
+                                </div>
+                                <button onclick="assignPlan('Shoulder Mobility Plan')"
+                                    class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Assign</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notification-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Tab System
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+            // Remove active style from buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-700', 'text-white');
+                btn.classList.add('text-emerald-300', 'hover:bg-emerald-900', 'hover:text-white');
+            });
+
+            // Show current section
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            // Style active button
+            const activeBtn = document.getElementById('nav-' + sectionId);
+            activeBtn.classList.add('bg-emerald-700', 'text-white');
+            activeBtn.classList.remove('text-emerald-300', 'hover:bg-emerald-900');
+
+            showNotification(`Navigated to ${sectionId.toUpperCase()}`);
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-lg shadow-lg text-white font-bold ${type === 'success' ? 'bg-emerald-600' : 'bg-red-600'} transition-all duration-300 transform translate-y-0`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function startSession(patient, elementId, cardId) {
+            showNotification(`Session started for ${patient}`, 'success');
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.innerHTML = `
+                    <button onclick="completeSession('${patient}', '${elementId}', '${cardId}')" class="w-full py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 animate-pulse">
+                        End & Mark Complete
+                    </button>
+                `;
+            }
+        }
+
+        function completeSession(patient, elementId, cardId) {
+            if (confirm(`Finish session for ${patient}?`)) {
+                showNotification(`Case Closed: Session for ${patient} marked as complete and saved.`, 'success');
+                const card = document.getElementById(cardId);
+                if (card) {
+                    card.style.backgroundColor = '#ecfdf5';
+                    card.innerHTML = `
+                        <div class="flex flex-col items-center justify-center p-8 text-emerald-700 font-bold w-full text-center">
+                            <span class="material-symbols-outlined text-4xl mb-2">verified</span>
+                            <h4 class="text-xl font-black">SESSION CLOSED</h4>
+                            <p class="text-sm font-normal text-emerald-600">Rehab session for ${patient} completed.</p>
+                            <button onclick="location.reload()" class="mt-4 text-xs bg-emerald-100 px-3 py-1 rounded text-emerald-700">Refresh Schedule</button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function assignPlan(name) {
+            showNotification(`Exercise plan "${name}" assigned successfully!`, 'success');
+        }
+
+        async function checkAccess() {
+            try {
+                const user = await apiCall('/users/me');
+                if (user.role !== 'physiotherapist' && user.role !== 'admin') {
+                    window.location.href = 'dashboard.html';
+                }
+                document.getElementById('physioName').textContent = user.full_name;
+            } catch (err) {
+                window.location.href = 'login.html';
+            }
+        }
+        checkAccess();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details - CareStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-sm h-16 flex items-center mb-8">
+        <div class="max-w-4xl mx-auto px-4 w-full flex justify-between items-center">
+            <a href="dashboard.html" class="flex items-center gap-2 text-blue-600 hover:text-blue-700">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span>Back to Dashboard</span>
+            </a>
+            <div class="font-bold text-xl text-healthcare-primary">CareStep Details</div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4">
+        <div id="loading" class="text-center py-20">
+            <span class="material-symbols-outlined animate-spin text-4xl text-blue-600">sync</span>
+            <p class="mt-2 text-gray-500">Loading details...</p>
+        </div>
+
+        <div id="bookingContent" class="hidden space-y-6">
+            <!-- Header Section -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-600">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 id="serviceName" class="text-2xl font-bold text-gray-800">Service Name</h1>
+                        <p id="bookingId" class="text-sm text-gray-500 mt-1">Booking # ---</p>
+                    </div>
+                    <span id="bookingStatusBadge"
+                        class="px-4 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wider">
+                        STATUS
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Main Details -->
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-600">info</span>
+                            Booking Information
+                        </h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase tracking-tight">Scheduled For</p>
+                                <p id="scheduledDate" class="font-semibold text-lg text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase tracking-tight">Service Address</p>
+                                <p id="serviceAddress" class="text-gray-800">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase tracking-tight">Booked On</p>
+                                <p id="bookedDate" class="text-gray-600 text-sm">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-600">check_circle</span>
+                            Track Progress
+                        </h2>
+                        <div class="flex flex-wrap gap-4">
+                            <button id="btnArrived" onclick="updateStatus('Arrived')"
+                                class="flex-1 min-w-[150px] py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">hail</span>
+                                Arrived
+                            </button>
+                            <button id="btnCompleted" onclick="updateStatus('Completed')"
+                                class="flex-1 min-w-[150px] py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">task_alt</span>
+                                Completed
+                            </button>
+                            <button id="btnCancelled" onclick="updateStatus('Cancelled')"
+                                class="flex-1 min-w-[150px] py-3 rounded-lg bg-red-50 text-red-600 font-bold hover:bg-red-100 transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">cancel</span>
+                                Cancel
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 text-center">Update the status once the doctor/nurse
+                            arrives or completes the service.</p>
+                    </div>
+                </div>
+
+                <!-- Sidebar Info -->
+                <div class="space-y-6">
+                    <!-- Professional Info -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-600">person_search</span>
+                            Assigned To
+                        </h2>
+                        <div id="professionalSection">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-blue-600">person</span>
+                                </div>
+                                <div>
+                                    <p id="professionalName" class="font-bold text-gray-800">Searching...</p>
+                                    <p id="professionalRole"
+                                        class="text-sm text-gray-500 uppercase tracking-wider text-xs">Healthcare
+                                        Personnel</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-4 italic" id="assignmentNote">Professional details will
+                                appear once assigned.</p>
+                        </div>
+                    </div>
+
+                    <!-- Need Help -->
+                    <div class="bg-blue-600 rounded-xl shadow-md p-6 text-white text-center">
+                        <span class="material-symbols-outlined text-4xl mb-2">support_agent</span>
+                        <h3 class="font-bold text-lg">Need Assistance?</h3>
+                        <p class="text-sm text-blue-100 mt-1 mb-4">Our support team is available 24/7 for medical
+                            emergencies.</p>
+                        <a href="tel:0800123456"
+                            class="block w-full py-2 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition">Call
+                            Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('id');
+
+        if (!bookingId) {
+            window.location.href = 'dashboard.html';
+        }
+
+        async function loadDetails() {
+            try {
+                const booking = await apiCall(`/bookings/${bookingId}`);
+                renderDetails(booking);
+            } catch (err) {
+                alert('Failed to load booking details: ' + err.message);
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        function renderDetails(booking) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('bookingContent').classList.remove('hidden');
+
+            document.getElementById('serviceName').textContent = booking.service ? booking.service.name : 'Unknown Service';
+            document.getElementById('bookingId').textContent = 'Booking #' + booking.id;
+
+            const statusBadge = document.getElementById('bookingStatusBadge');
+            statusBadge.textContent = booking.status;
+            statusBadge.className = `px-4 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wider ${getStatusClass(booking.status)}`;
+
+            document.getElementById('scheduledDate').textContent = new Date(booking.scheduled_date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' });
+            document.getElementById('serviceAddress').textContent = booking.address;
+            document.getElementById('bookedDate').textContent = 'Placed on ' + new Date(booking.booking_date).toLocaleDateString();
+
+            if (booking.professional) {
+                document.getElementById('professionalName').textContent = booking.professional.full_name;
+                document.getElementById('professionalRole').textContent = booking.professional.role;
+                document.getElementById('assignmentNote').textContent = "Arriving at your doorstep soon.";
+                document.getElementById('assignmentNote').classList.remove('italic', 'text-gray-600');
+                document.getElementById('assignmentNote').classList.add('text-green-600', 'font-medium');
+            } else {
+                document.getElementById('professionalName').textContent = "Pending Assignment";
+                document.getElementById('professionalRole').textContent = "Waiting for confirm";
+            }
+
+            // Button visibility based on status
+            if (booking.status === 'Completed' || booking.status === 'Cancelled') {
+                document.getElementById('btnArrived').classList.add('hidden');
+                document.getElementById('btnCompleted').classList.add('hidden');
+                document.getElementById('btnCancelled').classList.add('hidden');
+            }
+        }
+
+        async function updateStatus(newStatus) {
+            if (!confirm(`Mark this booking as ${newStatus}?`)) return;
+
+            try {
+                await apiCall(`/bookings/${bookingId}/status`, 'PATCH', { status: newStatus });
+                window.location.reload();
+            } catch (err) {
+                alert('Error updating status: ' + err.message);
+            }
+        }
+
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'pending': return 'bg-yellow-100 text-yellow-800';
+                case 'confirmed': return 'bg-blue-100 text-blue-800';
+                case 'arrived': return 'bg-purple-100 text-purple-800';
+                case 'completed': return 'bg-green-100 text-green-800';
+                case 'cancelled': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        loadDetails();
+    </script>
+</body>
+
+</html>
